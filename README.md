@@ -30,11 +30,11 @@ Requirements
 2. cron
 3. Prometheus
 
-1. Apache
+ Apache
 Just add a directory where you want to store the file. Adjust the directory rights
 to prevent any issues.
 
-2. Cron
+Cron
 Next set up your cron service to fetch the values in a regulat basis.
 1. crontab -e
 2. add the following to run every 5 seconds (adjust the path as needed)
@@ -42,7 +42,7 @@ Next set up your cron service to fetch the values in a regulat basis.
 
 Just let the job run and check if the file gets created at the destination directory.
 
-3. Prometheus
+Prometheus
 As next step you have to add the endpoint on your server at the Prometheus configuration.
 You can use the following example:
 - job_name: valistats
@@ -53,4 +53,4 @@ You can use the following example:
   scheme: http
   static_configs:
   - targets:
-    - YOUR IP
+      - YOUR IP
