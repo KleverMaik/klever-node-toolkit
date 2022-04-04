@@ -45,7 +45,7 @@ Just let the job run and check if the file gets created at the destination direc
 
 ## Prometheus
 As next step you have to add the endpoint on your server at the Prometheus configuration.
-You can use the following example:
+You can use the following example:<br />
 `- job_name: valistats`<br />
 `  honor_timestamps: true`<br />
 `  scrape_interval: 5s`<br />
