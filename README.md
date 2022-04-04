@@ -30,27 +30,28 @@ Requirements
 2. cron
 3. Prometheus
 
- Apache
+## Apache
 Just add a directory where you want to store the file. Adjust the directory rights
 to prevent any issues.
 
-Cron
+## Cron
 Next set up your cron service to fetch the values in a regulat basis.
 1. crontab -e
 2. add the following to run every 5 seconds (adjust the path as needed)
-  */5 * * * * /bin/bash -c "/home/USERNAME/status.sh"
+ 
+`  */5 * * * * /bin/bash -c "/home/USERNAME/klever-node-fetcher.sh"`
 
 Just let the job run and check if the file gets created at the destination directory.
 
-Prometheus
+## Prometheus
 As next step you have to add the endpoint on your server at the Prometheus configuration.
 You can use the following example:
-- job_name: valistats
-  honor_timestamps: true
-  scrape_interval: 5s
-  scrape_timeout: 5s
-  metrics_path: /status.json
-  scheme: http
-  static_configs:
-  - targets:
-      - YOUR IP
+`- job_name: valistats`<br />
+`  honor_timestamps: true`<br />
+`  scrape_interval: 5s`<br />
+`  scrape_timeout: 5s`<br />
+`  metrics_path: /status.json`<br />
+`  scheme: http`<br />
+`  static_configs:`<br />
+`  - targets:`<br />
+`      - YOUR IP`
