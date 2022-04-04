@@ -76,9 +76,11 @@ echo "TotalNumLeaderFailure $missed" >> /var/www/localhost/htdocs/status.json
 echo "TotalNumLeaderSuccess $leadsuccess" >> /var/www/localhost/htdocs/status.json
 echo "TotalNumValidatorIgnoredSignatures $ignored" >> /var/www/localhost/htdocs/status.json
 
+# Uncomment below commands if making use of validators-status.py and validators.txt. Reach out to JP if you want the following.
+
 # Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive)
-rm <PATH_OF_YOUR_CHOOSING>/validators.txt
-$PEERS >> <PATH_OF_YOUR_CHOOSING>/validators.txt
+#rm <PATH_OF_YOUR_CHOOSING>/validators.txt
+#$PEERS >> <PATH_OF_YOUR_CHOOSING>/validators.txt
 
 # Execute validatorstatus.py to get validator count and status's
-python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> /var/www/localhost/htdocs/status.json
+#python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> /var/www/localhost/htdocs/status.json
