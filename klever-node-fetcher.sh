@@ -18,25 +18,21 @@ curl -H "Accept: application/json" \
 
 # Gather YOUR current Node Status
 if echo "$OUTPUT" | grep -oP 'elected'; 
-
 then
     rm $WEBLINK
     echo "klv_peer_type 1" >> $WEBLINK 
 
 elif echo "$OUTPUT" | grep -oP 'eligible';
-
 then
     rm $WEBLINK
     echo "klv_peer_type 2" >> $WEBLINK
 
 elif echo "$OUTPUT" | grep -oP 'jailed';
-
 then
     rm $WEBLINK
     echo "klv_peer_type 3" >> $WEBLINK
 
 elif echo "$OUTPUT" | grep -oP 'observer';
-
 then
     rm $WEBLINK
     echo "klv_peer_type 4" >> $WEBLINK
@@ -44,19 +40,16 @@ then
 else
     rm $WEBLINK
     echo "klv_peer_type 0" >> $WEBLINK
-
 fi
 
 # From here start to fetch values of the node status
 # - just extent as needed
 # hnonce=$($METRICS | jq '.data.metrics.klv_probable_highest_nonce')
-
 # echo "klv_probable_highest_nonce $hnonce" >> $WEBLINK
 
 # From here start to fetch values of Validator statistics
 # 1. Modify YOUR_BLSKEY with your own node key
 # 2. Fetch the values
-
 struct=.data.statistics.
 var1=.Rating
 var2=.TotalNumValidatorSuccess
@@ -72,7 +65,6 @@ missed=$($PEERS | jq $struct$BLSkey$var3)
 leadsuccess=$($PEERS | jq $struct$BLSkey$var4)
 ignored=$($PEERS | jq $struct$BLSkey$var5)
 
-
 # Push metrics to status.json
 echo "Rating $rating"  >> $WEBLINK 
 echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
@@ -80,11 +72,10 @@ echo "TotalNumLeaderFailure $missed" >> $WEBLINK
 echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
 echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
 
-# Uncomment below commands if making use of validators-status.py and validators.txt. Reach out to JP if you want the following.
-
-# Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive)
+# Uncomment below commands if making use of the validators-status.py script also provided. Do not uncomment if not using the script.
+# Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive).
 #rm <PATH_OF_YOUR_CHOOSING>/validators.txt
 #$PEERS >> <PATH_OF_YOUR_CHOOSING>/validators.txt
 
-# Execute validatorstatus.py to get validator count and status's
+# Execute validator-status.py to push validator count and status's to $WEBLINK
 #python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $WEBLINK
