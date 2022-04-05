@@ -13,25 +13,25 @@ curl -H "Accept: application/json" \
      -i "http://YOURIP:8080/node/status"` 
 
 # Gather YOUR current Node Status
-if ! echo "$OUTPUT" | grep -oP 'elected'; 
+if echo "$OUTPUT" | grep -oP 'elected'; 
 
 then
     rm /var/www/localhost/htdocs/status.json 
     echo "klv_peer_type 1" >> /var/www/localhost/htdocs/status.json 
 
-elif ! echo "$OUTPUT" | grep -oP 'eligible';
+elif echo "$OUTPUT" | grep -oP 'eligible';
 
 then
     rm /var/www/localhost/htdocs/status.json
     echo "klv_peer_type 2" >> /var/www/localhost/htdocs/status.json
 
-elif ! echo "$OUTPUT" | grep -oP 'jailed';
+elif echo "$OUTPUT" | grep -oP 'jailed';
 
 then
     rm /var/www/localhost/htdocs/status.json
     echo "klv_peer_type 3" >> /var/www/localhost/htdocs/status.json
 
-elif ! echo "$OUTPUT" | grep -oP 'observer';
+elif echo "$OUTPUT" | grep -oP 'observer';
 
 then
     rm /var/www/localhost/htdocs/status.json
