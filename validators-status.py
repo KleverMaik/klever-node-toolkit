@@ -14,7 +14,7 @@ waiting_status = 'waiting'
 inactive_status = 'inactive'
 
 # Open text file in read only mode
-file = open("/home/jessep21/klever/scripts/flask/validators.txt", "r")
+file = open("/home/YOUR_PATH/validators.txt", "r")
 
 # Reading data of the file
 read_data = file.read()
