@@ -19,26 +19,26 @@ curl -H "Accept: application/json" \
 # Gather YOUR current Node Status
 if echo "$OUTPUT" | grep -oP 'elected'; 
 then
-    rm $WEBLINK
+    truncate -s 0 $WEBLINK
     echo "klv_peer_type 1" >> $WEBLINK 
 
 elif echo "$OUTPUT" | grep -oP 'eligible';
 then
-    rm $WEBLINK
+    truncate -s 0 $WEBLINK
     echo "klv_peer_type 2" >> $WEBLINK
 
 elif echo "$OUTPUT" | grep -oP 'jailed';
 then
-    rm $WEBLINK
+    truncate -s 0 $WEBLINK
     echo "klv_peer_type 3" >> $WEBLINK
 
 elif echo "$OUTPUT" | grep -oP 'observer';
 then
-    rm $WEBLINK
+    truncate -s 0 $WEBLINK
     echo "klv_peer_type 4" >> $WEBLINK
 
 else
-    rm $WEBLINK
+    truncate -s 0 $WEBLINK
     echo "klv_peer_type 0" >> $WEBLINK
 fi
 
@@ -48,8 +48,8 @@ fi
 # echo "klv_probable_highest_nonce $hnonce" >> $WEBLINK
 
 # From here start to fetch values of Validator statistics
-# 1. Modify YOUR_BLSKEY with your own node key
-# 2. Fetch the values
+# -> Modify YOUR_BLSKEY with your own node key
+
 struct=.data.statistics.
 var1=.Rating
 var2=.TotalNumValidatorSuccess
