@@ -489,10 +489,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -566,9 +562,9 @@
       },
       "id": 180,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
-        "justifyMode": "center",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -967,6 +963,6 @@
   "timezone": "",
   "title": "Klever2Pi",
   "uid": "jiTCyEEnk",
-  "version": 45,
+  "version": 46,
   "weekStart": "monday"
 }
