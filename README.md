@@ -7,6 +7,7 @@ To run that bash script, the following tools are needed:
 2. curl
 3. grep
 4. jq
+5. python3
 
 $METRICS and $PEERS are the paths to the server where the values are getting from.
 Just modify the path as needed to the end point of your machine.
