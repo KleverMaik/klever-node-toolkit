@@ -77,8 +77,6 @@ echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
 echo "TotalNumLeaderFailure $missed" >> $WEBLINK
 echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
 echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
-echo "AvailableBalance $balance" >> $WEBLINK
-echo "ClaimableRewards $allowance" >> $WEBLINK
 
 # Uncomment below commands if making use of the validators-status.py script also provided. Do not uncomment if not using the script.
 # Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive).
@@ -87,3 +85,7 @@ echo "ClaimableRewards $allowance" >> $WEBLINK
 
 # Execute validator-status.py to push validator count and status's to $WEBLINK
 #python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $WEBLINK
+
+# Balance and Allowance is needed at the end. Claiming the allowance nulls that metric causing the metrics following to not be recognized.
+echo "AvailableBalance $balance" >> $WEBLINK
+echo "ClaimableRewards $allowance" >> $WEBLINK
