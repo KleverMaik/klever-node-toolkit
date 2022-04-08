@@ -56,3 +56,6 @@ You can use the following example:<br />
 `  static_configs:`<br />
 `  - targets:`<br />
 `      - YOUR IP`
+
+Sample picture "Raspberry Pi Dashboard with attached 7" LCD"<br />
+![](/images/RasPi-Dashboard.png)
