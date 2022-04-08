@@ -7,6 +7,8 @@
 
 # Update the WEBLINK to the path where the status.json file should be stored
 WEBLINK='/var/www/localhost/htdocs/status.json'
+#Clear out the file
+truncate -s 0 $WEBLINK
 
 # Modify the IP or enter your full path to the web address of your server
 METRICS='curl http://YOURIP:8080/node/status'
@@ -20,26 +22,21 @@ curl -H "Accept: application/json" \
 # Gather YOUR current Node Status
 if echo "$OUTPUT" | grep -oP 'elected'; 
 then
-    truncate -s 0 $WEBLINK
     echo "klv_peer_type 1" >> $WEBLINK 
 
 elif echo "$OUTPUT" | grep -oP 'eligible';
 then
-    truncate -s 0 $WEBLINK
     echo "klv_peer_type 2" >> $WEBLINK
 
 elif echo "$OUTPUT" | grep -oP 'jailed';
 then
-    truncate -s 0 $WEBLINK
     echo "klv_peer_type 3" >> $WEBLINK
 
 elif echo "$OUTPUT" | grep -oP 'observer';
 then
-    truncate -s 0 $WEBLINK
     echo "klv_peer_type 4" >> $WEBLINK
 
 else
-    truncate -s 0 $WEBLINK
     echo "klv_peer_type 0" >> $WEBLINK
 fi
 
