@@ -59,3 +59,6 @@ You can use the following example:<br />
 
 Sample picture "Raspberry Pi Dashboard with attached 7" LCD"<br />
 ![](/images/RasPi-Dashboard.png)
+
+Sample of Desktop Dashboard
+![](/images/Klever-Dash1.png)
