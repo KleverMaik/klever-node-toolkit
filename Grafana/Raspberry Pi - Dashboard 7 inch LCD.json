@@ -457,9 +457,7 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 46
-        },
+        "text": {},
         "textMode": "auto"
       },
       "pluginVersion": "8.4.4",
@@ -540,12 +538,13 @@
     {
       "fieldConfig": {
         "defaults": {
+          "displayName": "Wallet Balance:",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-green",
+                "color": "semi-dark-blue",
                 "value": null
               }
             ]
@@ -555,26 +554,23 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
+        "h": 2,
+        "w": 9,
         "x": 15,
         "y": 5
       },
-      "id": 180,
+      "id": 184,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
           "fields": "",
           "values": false
-        },
-        "text": {
-          "valueSize": 46
         },
         "textMode": "auto"
       },
@@ -586,106 +582,55 @@
             "uid": "or4hW2Lnk"
           },
           "exemplar": true,
-          "expr": "TotalNumLeaderSuccess",
+          "expr": "AvailableBalance",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Success",
       "type": "stat"
     },
     {
+      "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 18,
-        "y": 5
-      },
-      "id": 158,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
+          "displayName": "Claimable Rewards:",
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "0"
+                }
+              },
+              "type": "value"
+            }
           ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 46
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.4.4",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "exemplar": false,
-          "expr": "klv_peak_tps",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "TPS Peak",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-purple",
+                "color": "semi-dark-blue",
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 21,
-        "y": 5
+        "h": 3,
+        "w": 9,
+        "x": 15,
+        "y": 7
       },
-      "id": 134,
+      "id": 182,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -693,26 +638,22 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 46
-        },
         "textMode": "auto"
       },
       "pluginVersion": "8.4.4",
       "targets": [
         {
           "datasource": {
-            "type": "prometheus"
+            "type": "prometheus",
+            "uid": "or4hW2Lnk"
           },
-          "exemplar": false,
-          "expr": "klv_epoch_number",
-          "instant": true,
+          "exemplar": true,
+          "expr": "ClaimableRewards",
           "interval": "",
-          "legendFormat": "Current Epoch",
+          "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Current Epoch",
       "type": "stat"
     },
     {
@@ -963,6 +904,6 @@
   "timezone": "",
   "title": "Klever2Pi",
   "uid": "jiTCyEEnk",
-  "version": 46,
+  "version": 53,
   "weekStart": "monday"
 }
