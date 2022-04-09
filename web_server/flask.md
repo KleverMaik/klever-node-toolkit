@@ -1,4 +1,4 @@
-# Install and Configure Flask Web Server
+# Extended Metrics Using Flask Web Server
 - Flask is a lightweight web application framework. Given the nature and purpose of what we are aiming to achieve, Flask will work. You may choose to use another of your choice.
 
 ## Install and verify Python3 version
@@ -41,9 +41,10 @@
   Werkzeug 2.0.3
   ```
 
-- Create 'templates' directory withing the 'flask_app' directory
+- Create 'templates' directory within the 'flask_app' directory
   
   ```
+  cd flask_app
   mkdir templates && cd templates
   ```
 
@@ -56,6 +57,7 @@
 - Create the flaskapp.py file in the 'flask_app' directory
 
   ```
+  cd flask_app
   vi flaskapp.py 
   ```
 
@@ -85,23 +87,54 @@
   
 # Update your prometheus.yml file
 
+- Add the following to the file
+
   ```
-- job_name: Flask-Metrics
+  - job_name: Flask-Metrics
     static_configs:
       - targets: ['localhost:5000']
   ``` 
 
-# Restart prometheus service
+- Restart prometheus service
 
   ```
   sudo systemctl restart prometheus.service
   ```
+  
+# Download extended metrics scripts
+
+- Within the 'flask_app' directory, pull the klever-node-fetcher.sh and validators-status.py scripts
+- 'validators-status.py' is a script that can be used independently if desired. If you plan to use it, remove the # from those lines at the bottom of 'klever-node-fetcher.sh'
+
+  ```
+  cd flask_app
+  wget https://raw.githubusercontent.com/KleverMaik/klever-node-fetcher/main/klever-node-fetcher.sh
+  wget https://raw.githubusercontent.com/KleverMaik/klever-node-fetcher/main/validators-status.py
+  ```
+  
+- Make scripts executable
+  
+  ```
+  chmod +x klever-node-fetcher.sh
+  chmod +x validators-status.py
+  ```
+
+- Create a cron job to execute the klever-node-fetcher.sh
+
+  ```
+  crontab -e
+  ```
+  
+- Insert the following at the bottom and modify the path. Save and Exit.
+  
+  ```
+  */5 * * * * /bin/bash -c "/home/PATH_TO_SCRIPT/klever-node-fetcher.sh"
+  ```
 
 # Verify 
-- Once you have your app running, verify you can access the URL. It should be blank but reachable.
+- Once you have your app running and scripts and files in place, verify you can access the URL and metrics are visible.
 
 ```
 IPAddress:5000/metrics
 ```
 
-- You may now populate the status.html file read in by your Flask application by using the 'klever-node-fetcher.sh' and setting up a cron job as noted in the main README.md file
