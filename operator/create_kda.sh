@@ -45,6 +45,6 @@ read -p 'Enter the precision: ' prec
 
 echo -e "\n"
 
-echo 'Your transaction has been completed. Please check the Klever Explorer for ' $address ' to check if it was successfull or not.'
+echo 'Your transaction has been completed. Please check the Klever Explorer for the address:' $address ' to check if it was successfull or not.'
 
 echo -e "\n"
