@@ -40,6 +40,14 @@ else
     echo "klv_peer_type 0" >> $WEBLINK
 fi
 
+# Get Node Consensus Slot State
+if echo "$OUTPUT" | grep -oP 'signed';
+then
+    echo "klv_slot_state 1" >> $WEBLINK
+else
+    echo "klv_slot_stats 2" >> $WEBLINK
+fi
+
 # From here start to fetch values of the node status
 # - just extent as needed
 # hnonce=$($METRICS | jq '.data.metrics.klv_probable_highest_nonce')
