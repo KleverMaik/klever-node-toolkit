@@ -65,8 +65,11 @@ var4=.TotalNumLeaderSuccess
 var5=.TotalNumValidatorIgnoredSignatures
 var6=.Balance
 var7=.Allowance
+var8=.data.metrics.
 BLSkey=YOUR_BLSKEY
 BLSkey=\"$BLSkey\"
+kversion=klv_app_version
+NVersion=\"$kversion\"
 
 rating=$($PEERS | jq $struct$BLSkey$var1)
 valisuccess=$($PEERS | jq $struct$BLSkey$var2)
@@ -75,6 +78,7 @@ leadsuccess=$($PEERS | jq $struct$BLSkey$var4)
 ignored=$($PEERS | jq $struct$BLSkey$var5)
 balance=$($BALANCE | jq $bal$var6/1000000)
 allowance=$($BALANCE | jq $bal$var7/1000000)
+nversion=$($METRICS | jq $var8$kversion | grep -oP '.*?(?=/go)' | sed 's/"//g')
 
 # Push metrics to status.json
 echo "Rating $rating"  >> $WEBLINK 
@@ -82,6 +86,7 @@ echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
 echo "TotalNumLeaderFailure $missed" >> $WEBLINK
 echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
 echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
+echo "Node_Version $nversion" >> $WEBLINK
 
 # Uncomment below commands if making use of the validators-status.py script also provided. Do not uncomment if not using the script.
 # Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive).
