@@ -53,7 +53,7 @@
   touch status.html
   ```
 
-- Create the flaskapp.py file
+- Create the flaskapp.py file in the 'flask_app' directory
 
   ```
   vi flaskapp.py 
@@ -94,7 +94,7 @@
 # Restart prometheus service
 
   ```
-  sudo systemctl enable prometheus.service
+  sudo systemctl restart prometheus.service
   ```
 
 # Verify 
