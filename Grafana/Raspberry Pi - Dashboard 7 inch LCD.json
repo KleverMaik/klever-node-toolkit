@@ -399,8 +399,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "or4hW2Lnk"
+            "type": "prometheus"
           },
           "exemplar": true,
           "expr": "klv_peer_type",
@@ -464,8 +463,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "or4hW2Lnk"
+            "type": "prometheus"
           },
           "exemplar": true,
           "expr": "Rating",
@@ -522,8 +520,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "or4hW2Lnk"
+            "type": "prometheus"
           },
           "exemplar": true,
           "expr": "TotalNumLeaderFailure",
@@ -578,8 +575,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "or4hW2Lnk"
+            "type": "prometheus"
           },
           "exemplar": true,
           "expr": "AvailableBalance",
@@ -644,8 +640,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "or4hW2Lnk"
+            "type": "prometheus"
           },
           "exemplar": true,
           "expr": "ClaimableRewards",
@@ -861,8 +856,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "or4hW2Lnk"
+            "type": "prometheus"
           },
           "exemplar": true,
           "expr": "klv_tx_pool_load",
@@ -903,7 +897,6 @@
   },
   "timezone": "",
   "title": "Klever2Pi",
-  "uid": "jiTCyEEnk",
   "version": 53,
   "weekStart": "monday"
 }
