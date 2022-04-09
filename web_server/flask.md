@@ -104,12 +104,31 @@
 # Download extended metrics scripts
 
 - Within the 'flask_app' directory, pull the klever-node-fetcher.sh and validators-status.py scripts
-- 'validators-status.py' is a script that can be used independently if desired. If you plan to use it, remove the # from those lines at the bottom of 'klever-node-fetcher.sh'
 
   ```
   cd flask_app
   wget https://raw.githubusercontent.com/KleverMaik/klever-node-fetcher/main/klever-node-fetcher.sh
   wget https://raw.githubusercontent.com/KleverMaik/klever-node-fetcher/main/validators-status.py
+  ```
+- Edit scripts and replace with your IP ADDRESS, WALLET ADDRESS and your BLS KEY
+
+  ```
+  METRICS='curl http://YOURIP:8080/node/status'
+  PEERS='curl http://YOURIP:8080/validator/statistics'
+  BALANCE='curl http://YOURIP:8080/address/YOUR_ADDRESS'
+  OUTPUT=`
+  curl -H "Accept: application/json" \
+       -H "Content-Type: application/json" \
+       -i "http://YOURIP:8080/node/status"` 
+  BLSkey=YOUR_BLSKEY
+  ```
+  
+- 'validators-status.py' is a script that can be used independently if desired. If you plan to use it, remove the # from those lines at the bottom of 'klever-node-fetcher.sh' and update the PATH where you plan to have validators.txt
+
+  ```
+  rm <PATH_OF_YOUR_CHOOSING>/validators.txt
+  $PEERS >> <PATH_OF_YOUR_CHOOSING>/validators.txt
+  python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $WEBLINK
   ```
   
 - Make scripts executable
