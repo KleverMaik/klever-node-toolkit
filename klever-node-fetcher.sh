@@ -97,6 +97,14 @@ echo "Node_Version $nversion" >> $XSTATS
 # Execute validator-status.py to push validator count and status's to $WEBLINK
 #python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $WEBLINK
 
-# Balance and Allowance is needed at the end. Claiming the allowance nulls that metric causing the metrics following to not be recognized.
+# Balance and Allowance is needed at the end.
+# Check if Rewards are = 0, if yes, add temporary = 1 to prevent Prometheus issues due to missing value
+if echo "$allowance" | grep -oP '';
+    then 
+        echo "ClaimableRewards $allowance" >> $WEBLINK
+    else 
+        echo "ClaimableRewards 1" >> $WEBLINK
+fi
+
 echo "AvailableBalance $balance" >> $WEBLINK
-echo "ClaimableRewards $allowance" >> $WEBLINK
+
