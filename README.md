@@ -1,6 +1,6 @@
 # klever-node-toolkit
-The "klever-node-toolkit" is a collection if different scripts to perform available
-operations provided by the "operator" application.
+The "klever-node-toolkit" is a collection of different scripts to perform available
+operations provided by the "operator" application and the node API itself.
 
 Following scripts we provide for now:
 1. klever-node-fetcher.sh | script to retrieve API values
