@@ -1,4 +1,15 @@
-# klever-node-fetcher
+# klever-node-toolkit
+The "klever-node-toolkit" is a collection if different scripts to perform available
+operations provided by the "operator" application.
+
+Following scripts we provide for now:
+1. klever-node-fetcher.sh | script to retrieve API values
+2. validators-status.py | script to calculate additional peer values
+3. getbalance.sh | simple bash script to display balance + rewards at the shell
+4. operator/create_kda.sh | create your own KDA at the Klever Blockchain
+
+
+## klever-node-fetcher
 some basic scripts/tools to fetch values -> modify to use in Prometheus and Grafana
 
 This "fetcher" script will help to retrieve some basic values out of the klever.io node.
@@ -7,7 +18,8 @@ To run that bash script, the following tools are needed:
 2. curl
 3. grep
 4. jq
-5. python3
+5. sed
+6. python3
 
 $METRICS and $PEERS are the paths to the server where the values are getting from.
 Just modify the path as needed to the end point of your machine.
@@ -31,11 +43,11 @@ Requirements
 2. cron
 3. Prometheus
 
-## Apache
+### Apache
 Just add a directory where you want to store the file. Adjust the directory rights
 to prevent any issues.
 
-## Cron
+### Cron
 Next set up your cron service to fetch the values in a regulat basis.
 1. crontab -e
 2. add the following to run every 5 seconds (adjust the path as needed)
@@ -44,7 +56,7 @@ Next set up your cron service to fetch the values in a regulat basis.
 
 Just let the job run and check if the file gets created at the destination directory.
 
-## Prometheus
+### Prometheus
 As next step you have to add the endpoint on your server at the Prometheus configuration.
 You can use the following example:<br />
 `- job_name: valistats`<br />
