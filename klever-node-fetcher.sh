@@ -3,10 +3,11 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.3.2
+# Version 0.3.3
 
 # Update the WEBLINK to the path where the status.json file should be stored
 WEBLINK='/var/www/localhost/htdocs/status.json'
+XSTATS='/var/www/localhost/htdocs/xstats.json'
 #Clear out the file
 truncate -s 0 $WEBLINK
 
@@ -78,7 +79,7 @@ leadsuccess=$($PEERS | jq $struct$BLSkey$var4)
 ignored=$($PEERS | jq $struct$BLSkey$var5)
 balance=$($BALANCE | jq $bal$var6/1000000)
 allowance=$($BALANCE | jq $bal$var7/1000000)
-#nversion=$($METRICS | jq $var8$kversion | grep -oP '.*?(?=/go)' | sed 's/"//g')
+nversion=$($METRICS | jq $var8$kversion | grep -oP '.*?(?=/go)' | sed 's/"//g')
 
 # Push metrics to status.json
 echo "Rating $rating"  >> $WEBLINK 
@@ -86,7 +87,7 @@ echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
 echo "TotalNumLeaderFailure $missed" >> $WEBLINK
 echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
 echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
-# echo "Node_Version $nversion" >> $WEBLINK
+echo "Node_Version $nversion" >> $XSTATS
 
 # Uncomment below commands if making use of the validators-status.py script also provided. Do not uncomment if not using the script.
 # Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive).
