@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.3.3
+# Version 0.3.4
 
 # Update the WEBLINK to the path where the status.json file should be stored
 WEBLINK='/var/www/localhost/htdocs/status.json'
