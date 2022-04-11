@@ -67,6 +67,7 @@ var5=.TotalNumValidatorIgnoredSignatures
 var6=.Balance
 var7=.Allowance
 var8=.data.metrics.
+var9=.TotalNumValidatorFailure
 BLSkey=YOUR_BLSKEY
 BLSkey=\"$BLSkey\"
 kversion=klv_app_version
@@ -81,6 +82,7 @@ ignored=$($PEERS | jq $struct$BLSkey$var5)
 balance=$($BALANCE | jq $bal$var6/1000000)
 allowance=$($BALANCE | jq $bal$var7)
 allowvalue=$(($allowance/1000000))
+valifailure=$($PEERS | jq $struct$BLSkey$var9)
 
 # Version export to be activated if needed
 #nversion=$($METRICS | jq $var8$kversion | grep -oP '.*?(?=/go)' | sed 's/"//g')
@@ -89,6 +91,7 @@ allowvalue=$(($allowance/1000000))
 # Push metrics to status.json
 echo "Rating $rating"  >> $WEBLINK 
 echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
+echo "TotalNumValidatorFailure $valifailure" >> $WEBLINK
 echo "TotalNumLeaderFailure $missed" >> $WEBLINK
 echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
 echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
