@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.3.4
+# Version 0.3.5
 
 # Update the WEBLINK to the path where the status.json file should be stored
 WEBLINK='/var/www/localhost/htdocs/status.json'
@@ -71,6 +71,7 @@ BLSkey=YOUR_BLSKEY
 BLSkey=\"$BLSkey\"
 kversion=klv_app_version
 NVersion=\"$kversion\"
+temp=''
 
 rating=$($PEERS | jq $struct$BLSkey$var1)
 valisuccess=$($PEERS | jq $struct$BLSkey$var2)
@@ -78,8 +79,12 @@ missed=$($PEERS | jq $struct$BLSkey$var3)
 leadsuccess=$($PEERS | jq $struct$BLSkey$var4)
 ignored=$($PEERS | jq $struct$BLSkey$var5)
 balance=$($BALANCE | jq $bal$var6/1000000)
-allowance=$($BALANCE | jq $bal$var7/1000000)
-nversion=$($METRICS | jq $var8$kversion | grep -oP '.*?(?=/go)' | sed 's/"//g')
+allowance=$($BALANCE | jq $bal$var7)
+allowvalue=$(($allowance/1000000))
+
+# Version export to be activated if needed
+#nversion=$($METRICS | jq $var8$kversion | grep -oP '.*?(?=/go)' | sed 's/"//g')
+#echo "Node_Version $nversion" >> $XSTATS
 
 # Push metrics to status.json
 echo "Rating $rating"  >> $WEBLINK 
@@ -87,7 +92,11 @@ echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
 echo "TotalNumLeaderFailure $missed" >> $WEBLINK
 echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
 echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
-echo "Node_Version $nversion" >> $XSTATS
+echo "AvailableBalance $balance" >> $WEBLINK
+if [ -z "$allowance" ];
+    then echo "ClaimableRewards 1" >> $WEBLINK
+    else echo "ClaimableRewards $allowvalue" >> $WEBLINK
+fi
 
 # Uncomment below commands if making use of the validators-status.py script also provided. Do not uncomment if not using the script.
 # Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive).
@@ -96,15 +105,4 @@ echo "Node_Version $nversion" >> $XSTATS
 
 # Execute validator-status.py to push validator count and status's to $WEBLINK
 #python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $WEBLINK
-
-# Balance and Allowance is needed at the end.
-# Check if Rewards are = 0, if yes, add temporary = 1 to prevent Prometheus issues due to missing value
-if echo "$allowance" | grep -oP '';
-    then 
-        echo "ClaimableRewards $allowance" >> $WEBLINK
-    else 
-        echo "ClaimableRewards 1" >> $WEBLINK
-fi
-
-echo "AvailableBalance $balance" >> $WEBLINK
 
