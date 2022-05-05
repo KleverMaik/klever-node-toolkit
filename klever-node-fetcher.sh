@@ -75,10 +75,10 @@ NVersion=\"$kversion\"
 temp=''
 
 rating=$($PEERS | jq $struct$BLSkey$var1)
-valisuccess=$($PEERS | jq $struct$BLSkey$var2)
-missed=$($PEERS | jq $struct$BLSkey$var3)
-leadsuccess=$($PEERS | jq $struct$BLSkey$var4)
-ignored=$($PEERS | jq $struct$BLSkey$var5)
+valisuccess=$($PEERS | jq $struct$BLSkey$var2*1)
+missed=$($PEERS | jq $struct$BLSkey$var3*1)
+leadsuccess=$($PEERS | jq $struct$BLSkey$var4*1)
+ignored=$($PEERS | jq $struct$BLSkey$var5*1)
 balance=$($BALANCE | jq $bal$var6/1000000)
 allowance=$($BALANCE | jq $bal$var7)
 allowvalue=$(($allowance/1000000))
@@ -90,15 +90,34 @@ valifailure=$($PEERS | jq $struct$BLSkey$var9)
 
 # Push metrics to status.json
 echo "Rating $rating"  >> $WEBLINK 
-echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
-echo "TotalNumValidatorFailure $valifailure" >> $WEBLINK
-echo "TotalNumLeaderFailure $missed" >> $WEBLINK
-echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
-echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
-echo "AvailableBalance $balance" >> $WEBLINK
+if [ -z "$valisuccess" ]; 
+	then echo "TotalNumValidatorSuccess 0" >> $WEBLINK
+	else echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
+fi
+
+if [ -z "$missed" ];
+	then echo "TotalNumLeaderFailure 0" >> $WEBLINK
+	else echo "TotalNumLeaderFailure $missed" >> $WEBLINK
+fi
+
+if [ -z "$leadsuccess" ];
+	then echo "TotalNumLeaderSuccess 0" >> $WEBLINK
+	else echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
+fi
+
+if [ -z "$ignored" ];
+	then echo "TotalNumValidatorIgnoredSignatures 0" >> $WEBLINK
+	else echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
+fi
+
+if [ -z "$balance" ];
+	then echo "AvailableBalance 1" >> $WEBLINK
+	else echo "AvailableBalance $balance" >> $WEBLINK
+fi
+
 if [ -z "$allowance" ];
-    then echo "ClaimableRewards 1" >> $WEBLINK
-    else echo "ClaimableRewards $allowvalue" >> $WEBLINK
+	then echo "ClaimableRewards 1" >> $WEBLINK
+	else echo "ClaimableRewards $allowvalue" >> $WEBLINK
 fi
 
 # Uncomment below commands if making use of the validators-status.py script also provided. Do not uncomment if not using the script.
