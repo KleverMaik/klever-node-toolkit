@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.3.5
+# Version 0.3.6
 
 # Update the WEBLINK to the path where the status.json file should be stored
 WEBLINK='/var/www/localhost/htdocs/status.json'
@@ -128,3 +128,13 @@ fi
 # Execute validator-status.py to push validator count and status's to $WEBLINK
 #python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $WEBLINK
 
+# Don't change the following lines.
+KLVPRICE='curl https://api.exchange.klever.io/v1/market/ticker?symbol=KLV-USDT'
+priceval=.price
+
+calcrew=$($KLVPRICE | jq $priceval | sed 's/.\(.*\)/\1/' | sed 's/\(.*\)./\1/')
+
+echo "CalcRewards " | tr -d '\n' >> $WEBLINK
+echo "$calcrew $allowvalue" | awk '{print $1 * $2}'  >> $WEBLINK
+echo "CalcBalance " | tr -d '\n' >> $WEBLINK
+echo "$calcrew $balance" | awk '{print $1 * $2}'  >> $WEBLINK
