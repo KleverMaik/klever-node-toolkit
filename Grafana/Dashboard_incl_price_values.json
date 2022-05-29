@@ -1591,7 +1591,7 @@
           "expr": "AvailableBalance",
           "instant": true,
           "interval": "",
-          "legendFormat": "Available Balance",
+          "legendFormat": "Available Balance (KLV)",
           "refId": "A"
         },
         {
@@ -1725,7 +1725,7 @@
           "expr": "ClaimableRewards",
           "format": "time_series",
           "instant": true,
-          "legendFormat": "Claimable Rewards",
+          "legendFormat": "Claimable Rewards (KLV)",
           "range": false,
           "refId": "A"
         },
