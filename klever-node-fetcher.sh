@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.3.6
+# Version 0.4
 
 # Update the WEBLINK to the path where the status.json file should be stored
 WEBLINK='/var/www/localhost/htdocs/status.json'
@@ -134,6 +134,7 @@ priceval=.price
 
 calcrew=$($KLVPRICE | jq $priceval | sed 's/.\(.*\)/\1/' | sed 's/\(.*\)./\1/')
 
+echo "KLVPrice" $calcrew >> $WEBLINK
 echo "CalcRewards " | tr -d '\n' >> $WEBLINK
 echo "$calcrew $allowvalue" | awk '{print $1 * $2}'  >> $WEBLINK
 echo "CalcBalance " | tr -d '\n' >> $WEBLINK
