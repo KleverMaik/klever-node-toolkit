@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.4
+# Version 0.4.1
 
 # Update the WEBLINK to the path where the status.json file should be stored
 WEBLINK='/var/www/localhost/htdocs/status.json'
@@ -89,7 +89,6 @@ valifailure=$($PEERS | jq $struct$BLSkey$var9)
 #echo "Node_Version $nversion" >> $XSTATS
 
 # Push metrics to status.json
-echo "Rating $rating"  >> $WEBLINK 
 if [ -z "$valisuccess" ]; 
 	then echo "TotalNumValidatorSuccess 0" >> $WEBLINK
 	else echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
@@ -139,3 +138,6 @@ echo "CalcRewards " | tr -d '\n' >> $WEBLINK
 echo "$calcrew $allowvalue" | awk '{print $1 * $2}'  >> $WEBLINK
 echo "CalcBalance " | tr -d '\n' >> $WEBLINK
 echo "$calcrew $balance" | awk '{print $1 * $2}'  >> $WEBLINK
+
+# rating of Validtor node - if node is running as Observer, value is NULL
+echo "Rating $rating"  >> $WEBLINK 
