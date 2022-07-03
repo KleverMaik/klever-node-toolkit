@@ -3,60 +3,64 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.4.1
+# Version 0.5
 
-# Update the WEBLINK to the path where the status.json file should be stored
-WEBLINK='/var/www/localhost/htdocs/status.json'
-XSTATS='/var/www/localhost/htdocs/xstats.json'
+# retrieve metrics and store at temporary file
+truncate -s 0 /tmp/nodestat.tmp
+truncate -s 0 /tmp/valistat.tmp
+
+# Modify the IP or enter your full path to the web address of your server and your wallet address
+BALANCE='curl http://YOUR_IP:8080/address/YOUR_WALLET_ADDRESS'
+curl http://YOUR_IP:8080/node/status >> /tmp/nodestat.tmp
+curl http://YOUR_IP:8080/validator/statistics >> /tmp/valistat.tmp
+
+# Path to the web directory of your server - you may have to update
+STATSFILE='/var/www/localhost/htdocs/status.json'
+
+# local files to store the values
+METRICS='cat /tmp/nodestat.tmp'
+PEERS='cat /tmp/valistat.tmp'
+TEMPFILE='/tmp/status.json'
+
 #Clear out the file
-truncate -s 0 $WEBLINK
-
-# Modify the IP or enter your full path to the web address of your server
-METRICS='curl http://YOURIP:8080/node/status'
-PEERS='curl http://YOURIP:8080/validator/statistics'
-BALANCE='curl http://YOURIP:8080/address/YOUR_ADDRESS'
-OUTPUT=`
-curl -H "Accept: application/json" \
-     -H "Content-Type: application/json" \
-     -i "http://YOURIP:8080/node/status"` 
+truncate -s 0 $TEMPFILE
 
 # Gather YOUR current Node Status
-if echo "$OUTPUT" | grep -oP 'elected'; 
+if echo "$METRICS" | grep -oP 'elected'; 
 then
-    echo "klv_peer_type 1" >> $WEBLINK 
+    echo "klv_peer_type 1" >> $TEMPFILE 
 
-elif echo "$OUTPUT" | grep -oP 'eligible';
+elif echo "$METRICS" | grep -oP 'eligible';
 then
-    echo "klv_peer_type 2" >> $WEBLINK
+    echo "klv_peer_type 2" >> $TEMPFILE
 
-elif echo "$OUTPUT" | grep -oP 'jailed';
+elif echo "$METRICS" | grep -oP 'jailed';
 then
-    echo "klv_peer_type 3" >> $WEBLINK
+    echo "klv_peer_type 3" >> $TEMPFILE
 
-elif echo "$OUTPUT" | grep -oP 'observer';
+elif echo "$METRICS" | grep -oP 'observer';
 then
-    echo "klv_peer_type 4" >> $WEBLINK
+    echo "klv_peer_type 4" >> $TEMPFILE
 
 else
-    echo "klv_peer_type 0" >> $WEBLINK
+    echo "klv_peer_type 0" >> $TEMPFILE
 fi
 
 # Get Node Consensus Slot State
-if echo "$OUTPUT" | grep -oP 'signed';
+if echo "$METRICS" | grep -oP 'signed';
 then
-    echo "klv_slot_state 1" >> $WEBLINK
+    echo "klv_slot_state 1" >> $TEMPFILE
 else
-    echo "klv_slot_stats 2" >> $WEBLINK
+    echo "klv_slot_stats 2" >> $TEMPFILE
 fi
 
 # From here start to fetch values of the node status
 # - just extent as needed
 # hnonce=$($METRICS | jq '.data.metrics.klv_probable_highest_nonce')
-# echo "klv_probable_highest_nonce $hnonce" >> $WEBLINK
+# echo "klv_probable_highest_nonce $hnonce" >> $TEMPFILE
 
 # From here start to fetch values of Validator statistics
 # -> Modify YOUR_BLSKEY with your own node key
-
 struct=.data.statistics.
 bal=.data.account
 var1=.Rating
@@ -70,8 +74,6 @@ var8=.data.metrics.
 var9=.TotalNumValidatorFailure
 BLSkey=YOUR_BLSKEY
 BLSkey=\"$BLSkey\"
-kversion=klv_app_version
-NVersion=\"$kversion\"
 temp=''
 
 rating=$($PEERS | jq $struct$BLSkey$var1)
@@ -84,60 +86,73 @@ allowance=$($BALANCE | jq $bal$var7)
 allowvalue=$(($allowance/1000000))
 valifailure=$($PEERS | jq $struct$BLSkey$var9)
 
-# Version export to be activated if needed
-#nversion=$($METRICS | jq $var8$kversion | grep -oP '.*?(?=/go)' | sed 's/"//g')
-#echo "Node_Version $nversion" >> $XSTATS
-
 # Push metrics to status.json
 if [ -z "$valisuccess" ]; 
-	then echo "TotalNumValidatorSuccess 0" >> $WEBLINK
-	else echo "TotalNumValidatorSuccess $valisuccess" >> $WEBLINK
+	then echo "TotalNumValidatorSuccess 0" >> $TEMPFILE
+	else echo "TotalNumValidatorSuccess $valisuccess" >> $TEMPFILE
 fi
 
 if [ -z "$missed" ];
-	then echo "TotalNumLeaderFailure 0" >> $WEBLINK
-	else echo "TotalNumLeaderFailure $missed" >> $WEBLINK
+	then echo "TotalNumLeaderFailure 0" >> $TEMPFILE
+	else echo "TotalNumLeaderFailure $missed" >> $TEMPFILE
 fi
 
 if [ -z "$leadsuccess" ];
-	then echo "TotalNumLeaderSuccess 0" >> $WEBLINK
-	else echo "TotalNumLeaderSuccess $leadsuccess" >> $WEBLINK
+	then echo "TotalNumLeaderSuccess 0" >> $TEMPFILE
+	else echo "TotalNumLeaderSuccess $leadsuccess" >> $TEMPFILE
 fi
 
 if [ -z "$ignored" ];
-	then echo "TotalNumValidatorIgnoredSignatures 0" >> $WEBLINK
-	else echo "TotalNumValidatorIgnoredSignatures $ignored" >> $WEBLINK
+	then echo "TotalNumValidatorIgnoredSignatures 0" >> $TEMPFILE
+	else echo "TotalNumValidatorIgnoredSignatures $ignored" >> $TEMPFILE
 fi
 
 if [ -z "$balance" ];
-	then echo "AvailableBalance 1" >> $WEBLINK
-	else echo "AvailableBalance $balance" >> $WEBLINK
+	then echo "AvailableBalance 1" >> $TEMPFILE
+	else echo "AvailableBalance $balance" >> $TEMPFILE
 fi
 
 if [ -z "$allowance" ];
-	then echo "ClaimableRewards 1" >> $WEBLINK
-	else echo "ClaimableRewards $allowvalue" >> $WEBLINK
+	then echo "ClaimableRewards 1" >> $TEMPFILE
+	else echo "ClaimableRewards $allowvalue" >> $TEMPFILE
 fi
+
+# Just decide the Exchange where the Price should be retrieved from.
+# 1. Klever Exchange
+#KLVPRICE='curl https://api.exchange.klever.io/v1/market/ticker?symbol=KLV-USDT'
+#priceval=.price
+
+# 2. Kucoin
+KLVPRICE='curl https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=KLV-USDT'
+priceval=.data.price
+
+# prepare the retrieved price
+calcrew=$($KLVPRICE | jq $priceval | sed 's/.\(.*\)/\1/' | sed 's/\(.*\)./\1/')
+
+# Calculate the rewards and display the price per KLV
+echo "KLVPrice" $calcrew >> $TEMPFILE
+echo "CalcRewards " | tr -d '\n' >> $TEMPFILE
+echo "$calcrew $allowvalue" | awk '{print $1 * $2}'  >> $TEMPFILE
+echo "CalcBalance " | tr -d '\n' >> $TEMPFILE
+echo "$calcrew $balance" | awk '{print $1 * $2}'  >> $TEMPFILE
 
 # Uncomment below commands if making use of the validators-status.py script also provided. Do not uncomment if not using the script.
 # Create validator.txt file to store complete validator status's (elected, eligible, jailed, waiting, inactive).
 #rm <PATH_OF_YOUR_CHOOSING>/validators.txt
 #$PEERS >> <PATH_OF_YOUR_CHOOSING>/validators.txt
 
-# Execute validator-status.py to push validator count and status's to $WEBLINK
-#python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $WEBLINK
+# Execute validator-status.py to push validator count and status's to $TEMPFILE
+#python3 <PATH_OF_YOUR_CHOOSING>/validators-status.py >> $TEMPFILE
 
-# Don't change the following lines.
-KLVPRICE='curl https://api.exchange.klever.io/v1/market/ticker?symbol=KLV-USDT'
-priceval=.price
+# rating of Validtor node - if node is running as Observer, value is NULL - output changed to 0
+if echo "$rating" | grep -oP 'null';
+then 
+echo 'Rating 0'  >> $TEMPFILE
+else 
+echo "Rating $rating"  >> $TEMPFILE 
+fi
 
-calcrew=$($KLVPRICE | jq $priceval | sed 's/.\(.*\)/\1/' | sed 's/\(.*\)./\1/')
-
-echo "KLVPrice" $calcrew >> $WEBLINK
-echo "CalcRewards " | tr -d '\n' >> $WEBLINK
-echo "$calcrew $allowvalue" | awk '{print $1 * $2}'  >> $WEBLINK
-echo "CalcBalance " | tr -d '\n' >> $WEBLINK
-echo "$calcrew $balance" | awk '{print $1 * $2}'  >> $WEBLINK
-
-# rating of Validtor node - if node is running as Observer, value is NULL
-echo "Rating $rating"  >> $WEBLINK 
+# Break of defined time until the loaded file replaces the status.json after loading all values.
+# That's to prevent broken values at Grafana Dashboard.
+sleep 5
+cp -f $TEMPFILE $STATSFILE
