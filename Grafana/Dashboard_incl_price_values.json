@@ -224,12 +224,12 @@
                 "4": {
                   "color": "orange",
                   "index": 4,
-                  "text": "Waiting"
+                  "text": "Inactive"
                 },
                 "5": {
                   "color": "super-light-yellow",
                   "index": 5,
-                  "text": "Inactive"
+                  "text": "Waiting"
                 }
               },
               "type": "value"
