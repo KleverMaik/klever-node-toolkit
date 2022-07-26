@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.5.1
+# Version 0.5.2
 
 # retrieve metrics and store at temporary file
 truncate -s 0 /tmp/nodestat.tmp
@@ -26,23 +26,23 @@ TEMPFILE='/tmp/status.json'
 truncate -s 0 $TEMPFILE
 
 # Gather YOUR current Node Status
-if echo "$METRICS" | grep -oP 'elected'; 
+if $METRICS | grep -oP 'elected'; 
 then
     echo "klv_peer_type 1" >> $TEMPFILE 
 
-elif echo "$METRICS" | grep -oP 'eligible';
+elif $METRICS | grep -oP 'eligible';
 then
     echo "klv_peer_type 2" >> $TEMPFILE
 
-elif echo "$METRICS" | grep -oP 'jailed';
+elif $METRICS | grep -oP 'jailed';
 then
     echo "klv_peer_type 3" >> $TEMPFILE
 
-elif echo "$METRICS" | grep -oP 'inactive';
+elif $METRICS | grep -oP 'inactive';
 then
     echo "klv_peer_type 4" >> $TEMPFILE
 
-elif echo "$METRICS" | grep -oP 'waiting';
+elif $METRICS | grep -oP 'waiting';
 then
     echo "klv_peer_type 5" >> $TEMPFILE
     
