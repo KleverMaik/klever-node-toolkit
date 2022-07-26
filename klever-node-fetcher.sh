@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.5.2
+# Version 0.5.3
 
 # retrieve metrics and store at temporary file
 truncate -s 0 /tmp/nodestat.tmp
@@ -55,7 +55,7 @@ if echo "$METRICS" | grep -oP 'signed';
 then
     echo "klv_slot_state 1" >> $TEMPFILE
 else
-    echo "klv_slot_stats 2" >> $TEMPFILE
+    echo "klv_slot_state 2" >> $TEMPFILE
 fi
 
 # From here start to fetch values of the node status
