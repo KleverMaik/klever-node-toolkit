@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.5.4
+# Version 0.5.5
 
 # retrieve metrics and store at temporary file
 truncate -s 0 /tmp/nodestat.tmp
@@ -67,7 +67,7 @@ fi
 # -> Modify YOUR_BLSKEY with your own node key
 struct=.data.statistics.
 bal=.data.account
-var1=.Rating
+var1=.TempRating
 var2=.TotalNumValidatorSuccess
 var3=.TotalNumLeaderFailure
 var4=.TotalNumLeaderSuccess
