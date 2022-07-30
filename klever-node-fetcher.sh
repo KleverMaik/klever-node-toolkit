@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.6
+# Version 0.6.1
 
 # retrieve metrics and store at temporary file
 truncate -s 0 /tmp/nodestat.tmp
@@ -103,6 +103,8 @@ balance=$($BALANCE | jq $bal$var6/1000000)
 allowance=$($BALANCE | jq $bal$var7)
 allowvalue=$(($allowance/1000000))
 valifailure=$($PEERS | jq $struct$BLSkey$var9)
+nodeversion=$($METRICS | jq -r '.data.metrics.klv_app_version' | grep -oP '.*?(?=/go)' | sed 's/"//g')
+nodename=$($DETAILS | jq -r '.data.validator.name')
 
 # Push metrics to status.json
 if [ -z "$valisuccess" ]; 
@@ -174,6 +176,10 @@ echo 'Rating 0'  >> $TEMPFILE
 else 
 echo "Rating $rating"  >> $TEMPFILE 
 fi
+
+# node version always as last part to prevent issues with Grafana
+echo "klv_app_version{node_version="\"$nodeversion"\"} 0" >> $TEMPFILE
+echo "klv_app_name{node_name="\"$nodename"\"} 0" >> $TEMPFILE
 
 # Break of defined time until the loaded file replaces the status.json after loading all values.
 # That's to prevent broken values at Grafana Dashboard.

@@ -149,9 +149,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "displayName": "ADD_YOUR_NODE_NAME",
           "mappings": [],
-          "noValue": "ADD_YOUR_NODE_NAME",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -173,20 +171,20 @@
       "id": 200,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^Community\\-Node\\-\\#1$/",
           "values": false
         },
         "text": {
           "valueSize": 24
         },
-        "textMode": "auto"
+        "textMode": "name"
       },
       "pluginVersion": "9.0.5",
       "targets": [
@@ -195,6 +193,12 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "klv_app_name",
+          "instant": true,
+          "legendFormat": "{{node_name}}",
+          "range": false,
           "refId": "A"
         }
       ],
@@ -212,7 +216,6 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "noValue": "ADD_YOUR_NODE_VERSION",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -241,7 +244,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/.*/",
+          "fields": "/^node_version$/",
           "values": false
         },
         "text": {
@@ -2928,6 +2931,6 @@
   "timezone": "",
   "title": "Validator full stats",
   "uid": "BPQCncU7k",
-  "version": 35,
+  "version": 37,
   "weekStart": "monday"
 }
