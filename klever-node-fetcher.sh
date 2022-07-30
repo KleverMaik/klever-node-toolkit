@@ -3,16 +3,18 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.5.5
+# Version 0.6
 
 # retrieve metrics and store at temporary file
 truncate -s 0 /tmp/nodestat.tmp
 truncate -s 0 /tmp/valistat.tmp
+truncate -s 0 /tmp/nodedetails.tmp
 
 # Modify the IP or enter your full path to the web address of your server and your wallet address
 BALANCE='curl http://YOUR_IP:8080/address/YOUR_WALLET_ADDRESS'
 curl http://YOUR_IP:8080/node/status >> /tmp/nodestat.tmp
 curl http://YOUR_IP:8080/validator/statistics >> /tmp/valistat.tmp
+curl https://api.mainnet.klever.finance/v1.0/validator/YOUR_VALIDATOR_WALLET  >> /tmp/nodedetails.tmp
 
 # Path to the web directory of your server - you may have to update
 STATSFILE='/var/www/localhost/htdocs/status.json'
@@ -21,6 +23,7 @@ STATSFILE='/var/www/localhost/htdocs/status.json'
 METRICS='cat /tmp/nodestat.tmp'
 PEERS='cat /tmp/valistat.tmp'
 TEMPFILE='/tmp/status.json'
+DETAILS='cat /tmp/nodedetails.tmp'
 
 #Clear out the file
 truncate -s 0 $TEMPFILE
@@ -80,6 +83,17 @@ BLSkey=YOUR_BLSKEY
 BLSkey=\"$BLSkey\"
 temp=''
 
+# validator details stats
+valdet=.data.validator
+maxdel=.maxDelegation
+totalstake=.totalStake
+totalrewards=.totalRewards
+
+mstake=$($DETAILS | jq $valdet$maxdel/1000000)
+tstake=$($DETAILS | jq $valdet$totalstake/1000000)
+trewards=$($DETAILS | jq $valdet$totalrewards/1000000)
+
+# general stats to be prepared
 rating=$($PEERS | jq $struct$BLSkey$var1)
 valisuccess=$($PEERS | jq $struct$BLSkey$var2*1)
 missed=$($PEERS | jq $struct$BLSkey$var3*1)
@@ -120,6 +134,11 @@ if [ -z "$allowance" ];
 	then echo "ClaimableRewards 1" >> $TEMPFILE
 	else echo "ClaimableRewards $allowvalue" >> $TEMPFILE
 fi
+
+# validator detail stats to be sent to json
+echo "stake_maximal $mstake" >> $TEMPFILE
+echo "stake_total $tstake" >> $TEMPFILE
+echo "stake_rewards $trewards" >> $TEMPFILE
 
 # Just decide the Exchange where the Price should be retrieved from.
 # 1. Klever Exchange
