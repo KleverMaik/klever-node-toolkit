@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.6.1
+# Version 0.6.2
 
 # retrieve metrics and store at temporary file
 truncate -s 0 /tmp/nodestat.tmp
@@ -88,10 +88,12 @@ valdet=.data.validator
 maxdel=.maxDelegation
 totalstake=.totalStake
 totalrewards=.totalRewards
+accumufees=.accumulatedFees
 
 mstake=$($DETAILS | jq $valdet$maxdel/1000000)
 tstake=$($DETAILS | jq $valdet$totalstake/1000000)
 trewards=$($DETAILS | jq $valdet$totalrewards/1000000)
+accufees=$($DETAILS | jq $valdet$accumufees/1000000)
 
 # general stats to be prepared
 rating=$($PEERS | jq $struct$BLSkey$var1)
@@ -140,7 +142,8 @@ fi
 # validator detail stats to be sent to json
 echo "stake_maximal $mstake" >> $TEMPFILE
 echo "stake_total $tstake" >> $TEMPFILE
-echo "stake_rewards $trewards" >> $TEMPFILE
+echo "total_rewards $trewards" >> $TEMPFILE
+echo "accumulatedFees $accufees" >> $TEMPFILE
 
 # Just decide the Exchange where the Price should be retrieved from.
 # 1. Klever Exchange
