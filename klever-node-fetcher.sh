@@ -3,7 +3,7 @@
 # Retrieve status of Validator node (eligible, elected, jailed)
 # Written by Maik @ community-node.ath.cx - 2022
 # Written by JP @ theklevernator.com - 2022
-# Version 0.6.2
+# Version 0.6.3
 
 # retrieve metrics and store at temporary file
 truncate -s 0 /tmp/nodestat.tmp
