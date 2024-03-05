@@ -147,7 +147,7 @@ echo "accumulatedFees $accufees" >> $TEMPFILE
 
 # Just decide the Exchange where the Price should be retrieved from.
 # 1. Klever Exchange
-#KLVPRICE='curl https://api.exchange.klever.io/v1/market/ticker?symbol=KLV-USDT'
+#KLVPRICE='curl https://api.exchange.bitcoin.me/v1/market/ticker?symbol=KLV-USDT'
 #priceval=.price
 
 # 2. Kucoin
